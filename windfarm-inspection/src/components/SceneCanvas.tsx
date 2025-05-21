@@ -3,6 +3,7 @@ import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { loadWindTurbines } from './useWindTurbines.ts';
 
 export default function SceneCanvas() {
   const mountRef = useRef<HTMLDivElement>(null);
@@ -21,6 +22,10 @@ export default function SceneCanvas() {
     // Cena
     const scene = new THREE.Scene();
     scene.background = new THREE.Color('#dfefff');
+
+    loadWindTurbines().then((turbines) => {
+    turbines.forEach((turbine) => scene.add(turbine));
+    });
 
     // Camera
     const camera = new THREE.PerspectiveCamera(
@@ -70,22 +75,22 @@ export default function SceneCanvas() {
     scene.add(gridHelper);
 
     // Loader do modelo GLB
-  const gltfLoader = new GLTFLoader();
-  gltfLoader.load(
-  '/models/windTower.glb', // coloque seu caminho aqui (deve estar em "public/models/")
- (gltf) => {
-  const turbine = gltf.scene;
-  console.log('Turbina carregada:', turbine);
-  console.log('Turbina carregada:', gltf);
-  turbine.position.set(0, 0, 0);
-  turbine.scale.set(1, 1, 1);
-  scene.add(turbine);
-},
-  undefined,
-  (error) => {
-    console.error('Erro ao carregar modelo GLB:', error);
-  }
-);
+//   const gltfLoader = new GLTFLoader();
+//   gltfLoader.load(
+//   '/models/windTower.glb', // coloque seu caminho aqui (deve estar em "public/models/")
+//  (gltf) => {
+//   const turbine = gltf.scene;
+//   console.log('Turbina carregada:', turbine);
+//   console.log('Turbina carregada:', gltf);
+//   turbine.position.set(0, 0, 0);
+//   turbine.scale.set(1, 1, 1);
+//   scene.add(turbine);
+// },
+//   undefined,
+//   (error) => {
+//     console.error('Erro ao carregar modelo GLB:', error);
+//   }
+// );
 
     // Controles de órbita
     const controls = new OrbitControls(camera, renderer.domElement);
