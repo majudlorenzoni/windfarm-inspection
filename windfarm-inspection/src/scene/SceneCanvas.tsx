@@ -1,12 +1,12 @@
 // src/components/SceneCanvas.tsx
 import React, { useRef, useState, useEffect } from 'react'
 import { Canvas, useFrame, useThree, extend } from '@react-three/fiber'
-import { OrbitControls } from '@react-three/drei'
+import { OrbitControls, Sky} from '@react-three/drei'
 import * as THREE from 'three'
 import Grass from '../components/environment/grass/grass'
 import { loadWindTurbines } from '../components/wind-turbine/useWindTurbines'
 
-const PLANE_SIZE = 150
+const PLANE_SIZE = 250
 const MIN_CAMERA_HEIGHT = 1.5
 const CAMERA_SPEED = 0.2
 
@@ -117,13 +117,16 @@ function CameraController() {
 
     if (camera.position.y < MIN_CAMERA_HEIGHT) camera.position.y = MIN_CAMERA_HEIGHT
 
+    const halfPlane = PLANE_SIZE / 2
+    camera.position.x = Math.min(Math.max(camera.position.x, -halfPlane), halfPlane)
+    camera.position.z = Math.min(Math.max(camera.position.z, -halfPlane), halfPlane)
+    
     // Atualizar a posição do chão para dar ilusão de infinito
     const cameraMovement = new THREE.Vector3().subVectors(camera.position, prevPos.current)
 
     planePos.current.x -= cameraMovement.x
     planePos.current.z -= cameraMovement.z
 
-    const halfPlane = PLANE_SIZE / 2
     if (planePos.current.x > halfPlane) planePos.current.x -= PLANE_SIZE
     else if (planePos.current.x < -halfPlane) planePos.current.x += PLANE_SIZE
     if (planePos.current.z > halfPlane) planePos.current.z -= PLANE_SIZE
@@ -144,17 +147,23 @@ export default function SceneCanvas() {
       camera={{ position: [0, 10, 20], fov: 75, near: 0.1, far: 1000 }}
       style={{ width: '100vw', height: '100vh' }}
     >
+      <Sky
+      distance={450000}
+      sunPosition={[100, 50, 100]}
+      inclination={0.49}
+      azimuth={0.25}
+    />
       <ambientLight intensity={0.4} />
       <hemisphereLight skyColor={0xddddff} groundColor={0x88bb88} intensity={0.2} />
       <directionalLight position={[10, 20, 10]} intensity={0.3} />
       <GroundPlane />
       <Grass
-        instanceCount={75000}      // mais gramas no espaço
+        instanceCount={100000 * 2}      // aumentamos ainda mais a densidade
         width={PLANE_SIZE}
-        height={1.2}
+        height={0.6}                // grama mais baixinha
         windSpeed={1.3}
-        color="#7fc56b"           // cor mais clara, verde vibrante
-        position={[0, 0.02, 0]}   // leve aumento na altura pra garantir que fique acima do plano
+        color="#7fc56b"             // verde vibrante
+        position={[0, 0.02, 0]}     // levemente acima do plano
       />
       <WindTurbines />
       <OrbitControls enablePan={false} />
