@@ -1,4 +1,4 @@
-import SceneCanvas from './components/SceneCanvas';
+import SceneCanvas from './scene/SceneCanvas';
 
 function App() {
   return (

@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import windFarmData from '../assets/data/windfarm.json';
+import windFarmData from '../../assets/data/windfarm.json';
 
 export async function loadWindTurbines(): Promise<THREE.Object3D[]> {
   const loader = new GLTFLoader();
