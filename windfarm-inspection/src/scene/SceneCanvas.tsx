@@ -28,15 +28,7 @@ function GroundPlane() {
   )
 }
 
-function WindTurbines() {
-  const [turbines, setTurbines] = useState<THREE.Object3D[]>([])
-
-  useEffect(() => {
-    loadWindTurbines().then((objs) => {
-      setTurbines(objs)
-    })
-  }, [])
-
+function WindTurbines({ turbines }: { turbines: THREE.Object3D[] }) {
   return (
     <>
       {turbines.map((obj, i) => (
@@ -45,6 +37,7 @@ function WindTurbines() {
     </>
   )
 }
+
 
 function CameraController() {
   const { camera, gl } = useThree()
@@ -138,8 +131,21 @@ function CameraController() {
   return null
 }
 
-export default function SceneCanvas() {
-  const planeRef = useRef<THREE.Mesh>(null)
+type SceneCanvasProps = {
+  turbines?: THREE.Object3D[]
+}
+
+export default function SceneCanvas({ turbines }: SceneCanvasProps) {
+  const [internalTurbines, setInternalTurbines] = useState<THREE.Object3D[]>([])
+
+  // Se a prop turbines não for passada, carrega os turbines internamente
+  useEffect(() => {
+    if (!turbines) {
+      loadWindTurbines().then(setInternalTurbines)
+    }
+  }, [turbines])
+
+  const turbinesToRender = turbines ?? internalTurbines
 
   return (
     <Canvas
@@ -148,24 +154,24 @@ export default function SceneCanvas() {
       style={{ width: '100vw', height: '100vh' }}
     >
       <Sky
-      distance={450000}
-      sunPosition={[100, 50, 100]}
-      inclination={0.49}
-      azimuth={0.25}
-    />
+        distance={450000}
+        sunPosition={[100, 50, 100]}
+        inclination={0.49}
+        azimuth={0.25}
+      />
       <ambientLight intensity={0.4} />
       <hemisphereLight skyColor={0xddddff} groundColor={0x88bb88} intensity={0.2} />
       <directionalLight position={[10, 20, 10]} intensity={0.3} />
       <GroundPlane />
       <Grass
-        instanceCount={100000 * 2}      // aumentamos ainda mais a densidade
+        instanceCount={100000 * 2}
         width={PLANE_SIZE}
-        height={0.6}                // grama mais baixinha
+        height={0.6}
         windSpeed={1.3}
-        color="#7fc56b"             // verde vibrante
-        position={[0, 0.02, 0]}     // levemente acima do plano
+        color="#7fc56b"
+        position={[0, 0.02, 0]}
       />
-      <WindTurbines />
+      <WindTurbines turbines={turbinesToRender} />
       <OrbitControls enablePan={false} />
       <CameraController />
     </Canvas>
