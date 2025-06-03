@@ -1,0 +1,206 @@
+{
+  "towers": [
+    {
+      "id": "Torre 1",
+      "scada_data": [
+        {
+          "timestamp": "2025-05-30T12:00:00Z",
+          "wind_speed": 8.5,
+          "power_output": 920,
+          "nacelle_direction": 135,
+          "rotor_speed": 15.2,
+          "ambient_temperature": 22.3,
+          "generator_temperature": 65.1
+        },
+        {
+          "timestamp": "2025-05-30T12:10:00Z",
+          "wind_speed": 9.0,
+          "power_output": 980,
+          "nacelle_direction": 137,
+          "rotor_speed": 15.8,
+          "ambient_temperature": 22.5,
+          "generator_temperature": 66.2
+        }
+      ],
+      "metadata": {
+        "num_variables": 7,
+        "first_timestamp": "2025-05-01T00:00:00Z",
+        "last_timestamp": "2025-05-31T23:50:00Z",
+        "num_datapoints": 4464,
+        "missing_datapoints": 12,
+        "uptime_percent": 99.7,
+        "energy_total_mwh": 215.4,
+        "capacity_factor": 0.42,
+        "flh": 3692,
+        "num_log_entries": 17
+      },
+      "logs": [
+        {
+          "timestamp": "2025-05-14T08:30:00Z",
+          "event": "Overspeed shutdown"
+        },
+        {
+          "timestamp": "2025-05-21T17:10:00Z",
+          "event": "Grid loss detected"
+        }
+      ],
+      "annotations": {
+        "owner": [
+          {
+            "timestamp": "2025-05-14T08:35:00Z",
+            "note": "Verificada parada automática por ventos fortes"
+          },
+          {
+            "timestamp": "2025-05-21T17:15:00Z",
+            "note": "Problema externo da rede elétrica"
+          }
+        ]
+      },
+      "standard_power_curve": [
+        { "wind_speed": 5, "expected_power_output": 250 },
+        { "wind_speed": 8, "expected_power_output": 800 },
+        { "wind_speed": 12, "expected_power_output": 1500 }
+      ],
+      "structural_vibration_signals": {
+        "timestamp": "2025-05-30T12:00:00Z",
+        "tower_base": [0.02, 0.03, 0.025],
+        "drivetrain": [0.05, 0.06, 0.055]
+      },
+      "vibration_frequency_spectrum": {
+        "timestamp": "2025-05-30T12:00:00Z",
+        "frequencies": [1, 2, 3, 4],
+        "amplitudes": [0.01, 0.02, 0.05, 0.01]
+      },
+      "bearing_vibration": {
+        "timestamp": "2025-05-30T12:00:00Z",
+        "amplitude": 0.07
+      },
+      "tower_stress_measurements": {
+        "timestamp": "2025-05-30T12:00:00Z",
+        "strain": 0.0012,
+        "stress": 210
+      },
+      "maintenance_log": [
+        {
+          "date": "2025-05-03",
+          "description": "Troca de sensor de vibração na base da torre",
+          "technician": "Eng. Carla Souza"
+        },
+        {
+          "date": "2025-05-18",
+          "description": "Verificação preventiva do sistema de frenagem",
+          "technician": "Tec. João Lima"
+        }
+      ],
+      "sensor_sampling_interval": {
+        "scada": "10min",
+        "vibration": "1s"
+      },
+      "accelerometer_data_location": {
+        "tower_base": "base da torre",
+        "drivetrain": "eixo principal"
+      }
+    },
+    {
+      "id": "Torre 2",
+      "scada_data": [
+        {
+          "timestamp": "2025-05-30T12:00:00Z",
+          "wind_speed": 7.8,
+          "power_output": 870,
+          "nacelle_direction": 130,
+          "rotor_speed": 14.9,
+          "ambient_temperature": 21.9,
+          "generator_temperature": 64.5
+        },
+        {
+          "timestamp": "2025-05-30T12:10:00Z",
+          "wind_speed": 8.4,
+          "power_output": 940,
+          "nacelle_direction": 132,
+          "rotor_speed": 15.3,
+          "ambient_temperature": 22.1,
+          "generator_temperature": 65.4
+        }
+      ],
+      "metadata": {
+        "num_variables": 7,
+        "first_timestamp": "2025-05-01T00:00:00Z",
+        "last_timestamp": "2025-05-31T23:50:00Z",
+        "num_datapoints": 4464,
+        "missing_datapoints": 8,
+        "uptime_percent": 99.2,
+        "energy_total_mwh": 202.7,
+        "capacity_factor": 0.39,
+        "flh": 3550,
+        "num_log_entries": 14
+      },
+      "logs": [
+        {
+          "timestamp": "2025-05-10T11:00:00Z",
+          "event": "Brake system warning"
+        },
+        {
+          "timestamp": "2025-05-25T13:20:00Z",
+          "event": "Yaw misalignment detected"
+        }
+      ],
+      "annotations": {
+        "owner": [
+          {
+            "timestamp": "2025-05-10T11:05:00Z",
+            "note": "Alerta de freio, sem necessidade de intervenção"
+          },
+          {
+            "timestamp": "2025-05-25T13:25:00Z",
+            "note": "Pequena desalinhamento corrigido automaticamente"
+          }
+        ]
+      },
+      "standard_power_curve": [
+        { "wind_speed": 5, "expected_power_output": 240 },
+        { "wind_speed": 8, "expected_power_output": 790 },
+        { "wind_speed": 12, "expected_power_output": 1490 }
+      ],
+      "structural_vibration_signals": {
+        "timestamp": "2025-05-30T12:00:00Z",
+        "tower_base": [0.021, 0.032, 0.028],
+        "drivetrain": [0.052, 0.061, 0.057]
+      },
+      "vibration_frequency_spectrum": {
+        "timestamp": "2025-05-30T12:00:00Z",
+        "frequencies": [1, 2, 3, 4],
+        "amplitudes": [0.012, 0.021, 0.048, 0.011]
+      },
+      "bearing_vibration": {
+        "timestamp": "2025-05-30T12:00:00Z",
+        "amplitude": 0.065
+      },
+      "tower_stress_measurements": {
+        "timestamp": "2025-05-30T12:00:00Z",
+        "strain": 0.0011,
+        "stress": 208
+      },
+      "maintenance_log": [
+        {
+          "date": "2025-05-08",
+          "description": "Inspeção visual do sistema de rotação",
+          "technician": "Tec. Ana Bezerra"
+        },
+        {
+          "date": "2025-05-22",
+          "description": "Ajuste nos rolamentos principais",
+          "technician": "Eng. Marcos Dias"
+        }
+      ],
+      "sensor_sampling_interval": {
+        "scada": "10min",
+        "vibration": "1s"
+      },
+      "accelerometer_data_location": {
+        "tower_base": "base da torre",
+        "drivetrain": "eixo principal"
+      }
+    }
+  ]
+}

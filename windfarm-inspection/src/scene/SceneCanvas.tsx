@@ -4,7 +4,8 @@ import { Canvas, useFrame, useThree, extend } from '@react-three/fiber'
 import { OrbitControls, Sky} from '@react-three/drei'
 import * as THREE from 'three'
 import Grass from '../components/environment/grass/grass'
-import { loadWindTurbines } from '../components/wind-turbine/useWindTurbines'
+import { loadWindTurbines } from '../components/wind-turbine/loadWindTurbines'
+import { useWindData } from '../components/windDataContext'
 
 const PLANE_SIZE = 250
 const MIN_CAMERA_HEIGHT = 1.5
@@ -131,49 +132,77 @@ function CameraController() {
   return null
 }
 
-type SceneCanvasProps = {
-  turbines?: THREE.Object3D[]
+
+type TowerData = {
+  id: string
+  // outros dados que precisar
 }
 
-export default function SceneCanvas({ turbines }: SceneCanvasProps) {
-  const [internalTurbines, setInternalTurbines] = useState<THREE.Object3D[]>([])
+type SceneCanvasProps = {
+  turbines?: THREE.Object3D[]
+  towerData?: TowerData[]
+}
 
-  // Se a prop turbines não for passada, carrega os turbines internamente
+export default function SceneCanvas({ turbines, towerData: propsTowerData }: SceneCanvasProps) {
+  const { windData } = useWindData();
+  const [internalTurbines, setInternalTurbines] = useState<THREE.Object3D[]>([]);
+  const [noData, setNoData] = useState(false);
+  const towerData = propsTowerData ?? windData?.towers ?? []
+
   useEffect(() => {
     if (!turbines) {
-      loadWindTurbines().then(setInternalTurbines)
+      if (towerData && towerData.length > 0) {
+        loadWindTurbines(towerData).then(setInternalTurbines);
+        setNoData(false);
+      } else {
+        setNoData(true);
+      }
     }
-  }, [turbines])
+  }, [turbines, towerData]);
 
-  const turbinesToRender = turbines ?? internalTurbines
+  const turbinesToRender = turbines ?? internalTurbines;
+
 
   return (
-    <Canvas
-      shadows
-      camera={{ position: [0, 10, 20], fov: 75, near: 0.1, far: 1000 }}
-      style={{ width: '100vw', height: '100vh' }}
-    >
-      <Sky
-        distance={450000}
-        sunPosition={[100, 50, 100]}
-        inclination={0.49}
-        azimuth={0.25}
-      />
-      <ambientLight intensity={0.4} />
-      <hemisphereLight skyColor={0xddddff} groundColor={0x88bb88} intensity={0.2} />
-      <directionalLight position={[10, 20, 10]} intensity={0.3} />
-      <GroundPlane />
-      <Grass
-        instanceCount={100000 * 2}
-        width={PLANE_SIZE}
-        height={0.6}
-        windSpeed={1.3}
-        color="#7fc56b"
-        position={[0, 0.02, 0]}
-      />
-      <WindTurbines turbines={turbinesToRender} />
-      <OrbitControls enablePan={false} />
-      <CameraController />
-    </Canvas>
-  )
+  <>
+      {noData ? (
+        <div style={{
+          color: 'black',
+          textAlign: 'center',
+          fontSize: '1.5rem',
+          paddingTop: '2rem',
+        }}>
+          Nenhum dado disponível. Por favor, carregue um arquivo JSON com os dados das turbinas.
+        </div>
+      ) : (
+        <Canvas
+          shadows
+          camera={{ position: [0, 10, 20], fov: 75, near: 0.1, far: 1000 }}
+          style={{ width: '100vw', height: '100vh' }}
+        >
+          <Sky
+            distance={450000}
+            sunPosition={[100, 50, 100]}
+            inclination={0.49}
+            azimuth={0.25}
+          />
+          <ambientLight intensity={0.4} />
+          <hemisphereLight skyColor={0xddddff} groundColor={0x88bb88} intensity={0.2} />
+          <directionalLight position={[10, 20, 10]} intensity={0.3} />
+          <GroundPlane />
+          <Grass
+            instanceCount={200000}
+            width={PLANE_SIZE}
+            height={0.6}
+            windSpeed={1.3}
+            color="#7fc56b"
+            position={[0, 0.02, 0]}
+          />
+          <WindTurbines turbines={turbinesToRender} />
+          <OrbitControls enablePan={false} />
+          <CameraController />
+        </Canvas>
+      )}
+    </>
+  );
 }
