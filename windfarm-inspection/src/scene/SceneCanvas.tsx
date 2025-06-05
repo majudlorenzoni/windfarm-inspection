@@ -5,7 +5,9 @@ import { OrbitControls, Sky} from '@react-three/drei'
 import * as THREE from 'three'
 import Grass from '../components/environment/grass/grass'
 import { loadWindTurbines } from '../components/wind-turbine/loadWindTurbines'
+import InteractiveTurbine from '../components/wind-turbine/interactiveTurbine'
 import { useWindData } from '../components/windDataContext'
+import TurbineInfoModal from '../components/wind-turbine/turbineInfoModal'
 
 const PLANE_SIZE = 250
 const MIN_CAMERA_HEIGHT = 1.5
@@ -29,16 +31,31 @@ function GroundPlane() {
   )
 }
 
-function WindTurbines({ turbines }: { turbines: THREE.Object3D[] }) {
+function WindTurbines({
+  turbines,
+  onHover,
+  onClick,
+  hovered
+}: {
+  turbines: THREE.Object3D[]
+  onHover: (obj: THREE.Object3D | null) => void
+  onClick: (obj: THREE.Object3D) => void
+  hovered: THREE.Object3D | null
+}) {
   return (
     <>
       {turbines.map((obj, i) => (
-        <primitive key={i} object={obj} />
+        <InteractiveTurbine
+          key={i}
+          object={obj}
+          onHover={onHover}
+          onClick={onClick}
+          isHovered={hovered === obj}
+        />
       ))}
     </>
   )
 }
-
 
 function CameraController() {
   const { camera, gl } = useThree()
@@ -132,7 +149,6 @@ function CameraController() {
   return null
 }
 
-
 type TowerData = {
   id: string
   // outros dados que precisar
@@ -147,6 +163,9 @@ export default function SceneCanvas({ turbines, towerData: propsTowerData }: Sce
   const { windData } = useWindData();
   const [internalTurbines, setInternalTurbines] = useState<THREE.Object3D[]>([]);
   const [noData, setNoData] = useState(false);
+  const [hovered, setHovered] = useState<THREE.Object3D | null>(null);
+  const [selected, setSelected] = useState<THREE.Object3D | null>(null);
+
   const towerData = propsTowerData ?? windData?.towers ?? []
 
   useEffect(() => {
@@ -162,6 +181,39 @@ export default function SceneCanvas({ turbines, towerData: propsTowerData }: Sce
 
   const turbinesToRender = turbines ?? internalTurbines;
 
+  const handleHover = (obj: THREE.Object3D | null) => {
+    setHovered(obj);
+  };
+
+  const handleClick = (obj: THREE.Object3D) => {
+    setSelected(obj);
+    console.log('Turbina selecionada:', obj.name || obj.uuid);
+  };
+
+   // Componente para controle da câmera com zoom no objeto selecionado
+function CameraZoomController({ selected }: { selected: THREE.Object3D | null }) {
+  const { camera } = useThree();
+
+  const desiredDistance = 25;
+const direction = new THREE.Vector3(1.3, 0.6, 1).normalize(); // agora: olhando da esquerda → torre aponta pra direita
+
+  useFrame(() => {
+    if (selected) {
+      const target = selected.position;
+
+      // Calcula posição desejada da câmera
+      const desiredPosition = target.clone()
+        .add(direction.clone().multiplyScalar(desiredDistance));
+
+      // Move suavemente a câmera
+      camera.position.lerp(desiredPosition, 0.08);
+      camera.lookAt(target);
+    }
+  });
+
+  return null;
+}
+
 
   return (
   <>
@@ -175,6 +227,7 @@ export default function SceneCanvas({ turbines, towerData: propsTowerData }: Sce
           Nenhum dado disponível. Por favor, carregue um arquivo JSON com os dados das turbinas.
         </div>
       ) : (
+        <>
         <Canvas
           shadows
           camera={{ position: [0, 10, 20], fov: 75, near: 0.1, far: 1000 }}
@@ -198,10 +251,26 @@ export default function SceneCanvas({ turbines, towerData: propsTowerData }: Sce
             color="#7fc56b"
             position={[0, 0.02, 0]}
           />
-          <WindTurbines turbines={turbinesToRender} />
+          <WindTurbines
+            turbines={turbinesToRender}
+            onHover={handleHover}
+            onClick={handleClick}
+            hovered={hovered}
+          />
           <OrbitControls enablePan={false} />
           <CameraController />
+         <CameraZoomController selected={selected} />
         </Canvas>
+
+       {/* Modal aparece à direita quando uma turbina é selecionada */}
+          {selected && (
+            <TurbineInfoModal
+              turbine={selected}
+              isOpen={true}
+              onClose={() => setSelected(null)}
+            />
+          )}
+        </>
       )}
     </>
   );
