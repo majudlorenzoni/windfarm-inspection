@@ -36,14 +36,15 @@ export default function InteractiveTurbine({ object, isHovered, onHover, onClick
         const mat = mesh.material as THREE.MeshStandardMaterial;
 
         console.log(hasAlert)
-        if (hasAlert) {
-          mat.emissive.set('#7a0606'); // vermelho tem prioridade
+        if (hasAlert && isHovered) {
+          mat.emissive.set('#ff0000'); // vermelho mais forte quando alertado + hover
+        } else if (hasAlert) {
+          mat.emissive.set('#7a0606'); // vermelho padrão de alerta
         } else if (isHovered) {
-          mat.emissive.set('#3d9ff0'); // só azul se não tiver alerta
+          mat.emissive.set('#3d9ff0'); // azul para hover sem alerta
         } else {
-          mat.emissive.set('#000000'); // padrão
+          mat.emissive.set('#000000'); // cor padrão sem hover nem alerta
         }
-
       }
     });
   });

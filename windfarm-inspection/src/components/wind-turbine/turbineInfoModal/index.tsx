@@ -25,7 +25,7 @@ export default function TurbineInfoModal({ turbine, onClose, isOpen }: TurbineIn
   return (
     <TurbineInfoModalContainer isOpen={isOpen}>
       <img 
-      src="../../../../public/img/close.png" 
+      src="/img/close.png" 
       className="close-btn" 
       onClick={onClose} 
       />
