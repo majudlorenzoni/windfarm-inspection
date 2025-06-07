@@ -35,22 +35,28 @@ function WindTurbines({
   turbines,
   onHover,
   onClick,
-  hovered
+  hovered,
+  selected,
+  isCameraZoomActive,
 }: {
   turbines: THREE.Object3D[]
   onHover: (obj: THREE.Object3D | null) => void
   onClick: (obj: THREE.Object3D) => void
   hovered: THREE.Object3D | null
+  selected: THREE.Object3D | null
+  isCameraZoomActive: boolean
 }) {
   return (
     <>
-      {turbines.map((obj, i) => (
+      {turbines.map((obj) => (
         <InteractiveTurbine
-          key={i}
+          key={obj.uuid}
           object={obj}
           onHover={onHover}
           onClick={onClick}
           isHovered={hovered === obj}
+          isSelected={selected === obj}
+          isCameraZoomActive={isCameraZoomActive}
         />
       ))}
     </>
@@ -191,29 +197,30 @@ export default function SceneCanvas({ turbines, towerData: propsTowerData }: Sce
   };
 
    // Componente para controle da câmera com zoom no objeto selecionado
-function CameraZoomController({ selected }: { selected: THREE.Object3D | null }) {
-  const { camera } = useThree();
+  function CameraZoomController({ selected }: { selected: THREE.Object3D | null }) {
+    const { camera } = useThree();
 
-  const desiredDistance = 25;
-const direction = new THREE.Vector3(1.3, 0.6, 1).normalize(); // agora: olhando da esquerda → torre aponta pra direita
+    const desiredDistance = 25;
+    const direction = new THREE.Vector3(1.3, 0.6, 1).normalize(); // agora: olhando da esquerda → torre aponta pra direita
 
-  useFrame(() => {
-    if (selected) {
-      const target = selected.position;
+    useFrame(() => {
+      if (selected) {
+        const target = selected.position;
 
-      // Calcula posição desejada da câmera
-      const desiredPosition = target.clone()
-        .add(direction.clone().multiplyScalar(desiredDistance));
+        // Calcula posição desejada da câmera
+        const desiredPosition = target.clone()
+          .add(direction.clone().multiplyScalar(desiredDistance));
 
-      // Move suavemente a câmera
-      camera.position.lerp(desiredPosition, 0.08);
-      camera.lookAt(target);
-    }
-  });
+        // Move suavemente a câmera
+        camera.position.lerp(desiredPosition, 0.08);
+        camera.lookAt(target);
+      }
+    });
 
-  return null;
-}
+    return null;
+  }
 
+  const isCameraZoomActive = selected !== null;
 
   return (
   <>
@@ -256,6 +263,8 @@ const direction = new THREE.Vector3(1.3, 0.6, 1).normalize(); // agora: olhando 
             onHover={handleHover}
             onClick={handleClick}
             hovered={hovered}
+            selected={selected}
+            isCameraZoomActive={isCameraZoomActive}
           />
           <OrbitControls enablePan={false} />
           <CameraController />

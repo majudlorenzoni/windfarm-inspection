@@ -201,6 +201,180 @@
         "tower_base": "base da torre",
         "drivetrain": "eixo principal"
       }
+    },
+    {
+      "id": "Torre 3",
+      "scada_data": [
+        {
+          "timestamp": "2025-05-30T12:00:00Z",
+          "wind_speed": 9.2,
+          "power_output": 900,
+          "nacelle_direction": 140,
+          "rotor_speed": 15.7,
+          "ambient_temperature": 23.1,
+          "generator_temperature": 82.6
+        },
+        {
+          "timestamp": "2025-05-30T12:10:00Z",
+          "wind_speed": 9.3,
+          "power_output": 910,
+          "nacelle_direction": 141,
+          "rotor_speed": 15.9,
+          "ambient_temperature": 23.4,
+          "generator_temperature": 83.2
+        }
+      ],
+      "metadata": {
+        "num_variables": 7,
+        "first_timestamp": "2025-05-01T00:00:00Z",
+        "last_timestamp": "2025-05-31T23:50:00Z",
+        "num_datapoints": 4464,
+        "missing_datapoints": 24,
+        "uptime_percent": 95.2,
+        "energy_total_mwh": 180.3,
+        "capacity_factor": 0.35,
+        "flh": 3150,
+        "num_log_entries": 21
+      },
+      "logs": [
+        { "timestamp": "2025-05-06T10:12:00Z", "event": "Brake system failure" },
+        { "timestamp": "2025-05-15T09:00:00Z", "event": "Yaw misalignment detected" },
+        { "timestamp": "2025-05-20T14:30:00Z", "event": "Overspeed shutdown" }
+      ],
+      "annotations": {
+        "owner": [
+          {
+            "timestamp": "2025-05-06T10:15:00Z",
+            "note": "Sistema de freio apresentou falha crítica"
+          },
+          {
+            "timestamp": "2025-05-20T14:35:00Z",
+            "note": "Parada de emergência acionada automaticamente"
+          }
+        ]
+      },
+      "standard_power_curve": [
+        { "wind_speed": 5, "expected_power_output": 250 },
+        { "wind_speed": 8, "expected_power_output": 800 },
+        { "wind_speed": 12, "expected_power_output": 1500 }
+      ],
+      "structural_vibration_signals": {
+        "timestamp": "2025-05-30T12:00:00Z",
+        "tower_base": [0.08, 0.09, 0.085],
+        "drivetrain": [0.12, 0.13, 0.125]
+      },
+      "vibration_frequency_spectrum": {
+        "timestamp": "2025-05-30T12:00:00Z",
+        "frequencies": [1, 2, 3, 4],
+        "amplitudes": [0.08, 0.09, 0.13, 0.07]
+      },
+      "bearing_vibration": {
+        "timestamp": "2025-05-30T12:00:00Z",
+        "amplitude": 0.14
+      },
+      "tower_stress_measurements": {
+        "timestamp": "2025-05-30T12:00:00Z",
+        "strain": 0.0024,
+        "stress": 280
+      },
+      "maintenance_log": [
+        {
+          "date": "2025-05-05",
+          "description": "Tentativa de ajuste no sistema de frenagem",
+          "technician": "Eng. Felipe Ramos"
+        },
+        {
+          "date": "2025-05-19",
+          "description": "Reparo emergencial do sistema de freio",
+          "technician": "Tec. Maria Silva"
+        }
+      ],
+      "sensor_sampling_interval": {
+        "scada": "10min",
+        "vibration": "1s"
+      },
+      "accelerometer_data_location": {
+        "tower_base": "base da torre",
+        "drivetrain": "eixo principal"
+      }
+    },
+    {
+      "id": "Torre 4",
+      "scada_data": [
+        {
+          "timestamp": "2025-06-07T12:00:00Z",
+          "wind_speed": 8.0,
+          "power_output": 850,
+          "nacelle_direction": 135,
+          "rotor_speed": 15.0,
+          "ambient_temperature": 22.0,
+          "generator_temperature": 60.0
+        },
+        {
+          "timestamp": "2025-06-07T12:10:00Z",
+          "wind_speed": 8.2,
+          "power_output": 870,
+          "nacelle_direction": 136,
+          "rotor_speed": 15.2,
+          "ambient_temperature": 22.1,
+          "generator_temperature": 60.5
+        }
+      ],
+      "metadata": {
+        "num_variables": 7,
+        "first_timestamp": "2025-06-01T00:00:00Z",
+        "last_timestamp": "2025-06-07T12:10:00Z",
+        "num_datapoints": 1000,
+        "missing_datapoints": 0,
+        "uptime_percent": 100.0,
+        "energy_total_mwh": 50.0,
+        "capacity_factor": 0.40,
+        "flh": 3500,
+        "num_log_entries": 0
+      },
+      "logs": [],
+      "annotations": {
+        "owner": []
+      },
+      "standard_power_curve": [
+        { "wind_speed": 5, "expected_power_output": 200 },
+        { "wind_speed": 8, "expected_power_output": 850 },
+        { "wind_speed": 12, "expected_power_output": 1500 }
+      ],
+      "structural_vibration_signals": {
+        "timestamp": "2025-06-07T12:00:00Z",
+        "tower_base": [0.01, 0.02, 0.015],
+        "drivetrain": [0.04, 0.05, 0.045]
+      },
+      "vibration_frequency_spectrum": {
+        "timestamp": "2025-06-07T12:00:00Z",
+        "frequencies": [1, 2, 3, 4],
+        "amplitudes": [0.005, 0.008, 0.01, 0.004]
+      },
+      "bearing_vibration": {
+        "timestamp": "2025-06-07T12:00:00Z",
+        "amplitude": 0.05
+      },
+      "tower_stress_measurements": {
+        "timestamp": "2025-06-07T12:00:00Z",
+        "strain": 0.0008,
+        "stress": 180
+      },
+      "maintenance_log": [
+        {
+          "date": "2025-06-03",
+          "description": "Inspeção preventiva sem anomalias",
+          "technician": "Eng. Lucas Almeida"
+        }
+      ],
+      "sensor_sampling_interval": {
+        "scada": "10min",
+        "vibration": "1s"
+      },
+      "accelerometer_data_location": {
+        "tower_base": "base da torre",
+        "drivetrain": "eixo principal"
+      }
     }
   ]
 }

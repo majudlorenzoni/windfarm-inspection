@@ -27,14 +27,26 @@ export default function InteractiveTurbine({ object, isHovered, onHover, onClick
   }, [])
 
   useFrame(() => {
+    const hasAlert = cloneRef.current.userData?.hasAlert;
+    console.log(hasAlert)
+
     cloneRef.current.traverse((child) => {
       if ((child as THREE.Mesh).isMesh) {
-        const mesh = child as THREE.Mesh
-        const mat = mesh.material as THREE.MeshStandardMaterial
-        mat.emissive.set(isHovered ? '#3d9ff0' : '#000000')
+        const mesh = child as THREE.Mesh;
+        const mat = mesh.material as THREE.MeshStandardMaterial;
+
+        console.log(hasAlert)
+        if (hasAlert) {
+          mat.emissive.set('#7a0606'); // vermelho tem prioridade
+        } else if (isHovered) {
+          mat.emissive.set('#3d9ff0'); // só azul se não tiver alerta
+        } else {
+          mat.emissive.set('#000000'); // padrão
+        }
+
       }
-    })
-  })
+    });
+  });
 
   return (
     <primitive
