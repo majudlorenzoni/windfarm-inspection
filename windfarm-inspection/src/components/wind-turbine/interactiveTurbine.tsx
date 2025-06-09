@@ -34,6 +34,7 @@ export default function InteractiveTurbine({ object, isHovered, onHover, onClick
         const mesh = child as THREE.Mesh;
         const mat = mesh.material as THREE.MeshStandardMaterial;
 
+        console.log(hasAlert)
         if (hasAlert && isHovered) {
           mat.emissive.set('#ff0000'); 
         } else if (hasAlert) {
