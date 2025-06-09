@@ -8,6 +8,8 @@ import { loadWindTurbines } from '../components/wind-turbine/loadWindTurbines'
 import InteractiveTurbine from '../components/wind-turbine/interactiveTurbine'
 import { useWindData } from '../components/windDataContext'
 import TurbineInfoModal from '../components/wind-turbine/turbineInfoModal'
+import { AlertIcon } from '../components/wind-turbine/alertIcon/alertIcon'
+import { checkIfTowerHasAlert, getTowerAlerts } from '../components/wind-turbine/checkTowerAlert'
 
 const PLANE_SIZE = 250
 const MIN_CAMERA_HEIGHT = 1.5
@@ -39,29 +41,62 @@ function WindTurbines({
   selected,
   isCameraZoomActive,
 }: {
-  turbines: THREE.Object3D[]
-  onHover: (obj: THREE.Object3D | null) => void
-  onClick: (obj: THREE.Object3D) => void
-  hovered: THREE.Object3D | null
-  selected: THREE.Object3D | null
-  isCameraZoomActive: boolean
+  turbines: THREE.Object3D[];
+  onHover: (obj: THREE.Object3D | null) => void;
+  onClick: (obj: THREE.Object3D) => void;
+  hovered: THREE.Object3D | null;
+  selected: THREE.Object3D | null;
+  isCameraZoomActive: boolean;
 }) {
+  const { windData } = useWindData();
+  const towerData = windData?.towers ?? [];
+
   return (
     <>
-      {turbines.map((obj) => (
-        <InteractiveTurbine
-          key={obj.uuid}
-          object={obj}
-          onHover={onHover}
-          onClick={onClick}
-          isHovered={hovered === obj}
-          isSelected={selected === obj}
-          isCameraZoomActive={isCameraZoomActive}
-        />
-      ))}
+      {turbines.map((obj) => {
+        const tower = towerData.find(t => t.id === obj.name);
+        const alerts = tower ? getTowerAlerts(tower) : [];
+
+        // Ajusta o deslocamento horizontal conforme número de alertas
+        const offsetX = alerts.length >= 3 ? -5 : -3; // desloca mais para esquerda se tiver 3 ou 4 ícones
+
+        const baseX = obj.position.x + offsetX;
+        const baseY = obj.position.y + 12;
+        const baseZ = obj.position.z;
+        const spacing = 2;
+
+        // Posições em quadrado para até 4 alertas
+        const iconPositions: [number, number, number][] = [
+          [baseX, baseY, baseZ],                 // superior esquerdo
+          [baseX + spacing, baseY, baseZ],      // superior direito
+          [baseX, baseY - spacing, baseZ],      // inferior esquerdo
+          [baseX + spacing, baseY - spacing, baseZ], // inferior direito
+        ];
+
+        return (
+          <group key={obj.uuid}>
+            <InteractiveTurbine
+              object={obj}
+              onHover={onHover}
+              onClick={onClick}
+              isHovered={hovered === obj}
+              isSelected={selected === obj}
+              isCameraZoomActive={isCameraZoomActive}
+            />
+            {alerts.map((alertType, index) => (
+              <AlertIcon
+                key={alertType}
+                alertType={alertType}
+                position={iconPositions[index]}
+              />
+            ))}
+          </group>
+        );
+      })}
     </>
-  )
+  );
 }
+
 
 function CameraController() {
   const { camera, gl } = useThree()
@@ -193,7 +228,6 @@ export default function SceneCanvas({ turbines, towerData: propsTowerData }: Sce
 
   const handleClick = (obj: THREE.Object3D) => {
     setSelected(obj);
-    console.log('Turbina selecionada:', obj.name || obj.uuid);
   };
 
    // Componente para controle da câmera com zoom no objeto selecionado
