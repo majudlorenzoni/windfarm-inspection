@@ -1,6 +1,7 @@
 import React from 'react'
 import * as THREE from 'three'
-import { TurbineInfoModalContainer } from './styles'
+import { TurbineInfoModalContainer, AlertSection } from './styles'
+import { checkIfTowerHasAlert, getAlertMessages } from '../checkTowerAlert'
 
 type TurbineInfoModalProps = {
   turbine: THREE.Object3D
@@ -18,9 +19,11 @@ export default function TurbineInfoModal({ turbine, onClose, isOpen }: TurbineIn
         <p>Sem dados disponíveis para essa turbina.</p>
       </div>
     );
-  }
+  }  
 
   const latestScada = userData.scada_data?.[userData.scada_data.length - 1];
+  const hasAlert = checkIfTowerHasAlert(userData);
+  const alertMessages = getAlertMessages(userData);  
 
   return (
     <TurbineInfoModalContainer isOpen={isOpen}>
@@ -31,6 +34,25 @@ export default function TurbineInfoModal({ turbine, onClose, isOpen }: TurbineIn
       />
       <h2>{name || userData.id || 'Turbina sem nome'}</h2>
     
+    {hasAlert && (
+      <AlertSection>
+        <button 
+          className="alert-info-button"
+          onClick={() => alert("Aqui você pode adicionar informações detalhadas sobre os alertas")}
+          aria-label="Mais informações sobre os alertas"
+        >
+          <img src='public/img/question.png' alt="Ícone de ajuda" />
+        </button>
+        
+        <h3>⚠️ {alertMessages.length === 1 ? 'ALERTA' : 'ALERTAS'} ATIVO{alertMessages.length === 1 ? '' : 'S'}</h3>
+        <ul>
+          {alertMessages.map((message, index) => (
+            <li key={index}>{message}</li>
+          ))}
+        </ul>
+      </AlertSection>
+    )}
+      
       <section>
         <h3>Último dado SCADA</h3>
         {latestScada ? (

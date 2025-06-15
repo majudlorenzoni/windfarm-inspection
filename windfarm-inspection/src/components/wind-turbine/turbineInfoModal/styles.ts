@@ -99,3 +99,51 @@ export const TurbineInfoModalContainer = styled.div<ModalProps>`
     }
   }
 `;
+
+
+export const AlertSection = styled.section`
+  background-color: #8b0015;
+  border-left: 4px solidrgb(245, 200, 197);
+  padding: 16px;
+  margin: 16px 0;
+  border-radius: 4px;
+  
+  h3 {
+    color:rgb(255, 251, 251);
+    margin-top: 0;
+  }
+  
+  ul {
+    margin-bottom: 0;
+    padding-left: 20px;
+  }
+  
+  li {
+    color:rgb(255, 251, 251);
+    font-weight: 500;
+  }
+
+  .alert-info-button {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  position: absolute;
+  right: 35px;
+  top: 185px;
+}
+
+.alert-info-button img {
+  width: 20px;
+  height: 20px;
+  transition: opacity 0.2s;
+}
+
+.alert-info-button:hover img {
+  opacity: 0.8;
+}
+
+.alert-info-button:active img {
+  transform: scale(0.95);
+}
+`; 
