@@ -4,6 +4,8 @@ import { LoadPageContainer } from './styles';
 import { DataWind } from '../dataWind';
 import { DataWindContainer } from '../dataWind/styles';
 import { useWindData } from '../../windDataContext'
+import { saveInspection } from '../../../utils/saveInspection';
+import { auth } from '../../../../firebase';
 
 type ScadaData = {
   timestamp: string;
@@ -74,7 +76,7 @@ const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
       if (!validateJson(json)) return;
 
       setLocalWindData(json);
-      setWindData(json);           // <-- mover para dentro do onload, usar o 'json' correto
+      setWindData(json);
       setSelectedTowerIndex(0);
       setConfirmView(false);
     } catch (error) {
@@ -85,12 +87,24 @@ const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
   reader.readAsText(file);
 };
 
+const handleConfirm = async () => {
+  if (!localWindData) return;
 
-  const handleConfirm = () => {
-    if (localWindData) {
-      navigate('/windFarm');
-    }
-  };
+  const user = auth.currentUser;
+  if (!user || !user.email) {
+    alert('Usuário não autenticado. Faça login para salvar.');
+    return;
+  }
+
+  try {
+    await saveInspection(localWindData);
+    alert('Inspeção salva com sucesso!');
+    navigate('/windFarm');
+  } catch (error) {
+    console.error('Erro ao salvar inspeção:', error);
+    alert(`Erro ao salvar inspeção: ${error instanceof Error ? error.message : error}`);
+  }
+};
 
   const handleSelectTower = (index: number) => {
     setSelectedTowerIndex(index);

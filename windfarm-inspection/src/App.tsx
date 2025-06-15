@@ -5,14 +5,18 @@ import { LoadPage } from './components/ui/loadPage';
 import SceneCanvas from './scene/SceneCanvas';
 import { AuthProvider } from './components/contexts/authContext';
 import { PrivateRoute } from './routes/privateRoute';
+import { LoginPage } from './components/ui/loginPage/loginPage';
+import { PreviousInspectionsPage } from './components/ui/inspetionPage';
 
 function App() {
   return (
     <AuthProvider>
       <GlobalStyle />
       <Routes>
+        <Route path="/login" element={<LoginPage />} />
         <Route path="/home" element={<HomePage />} />
         <Route path="/load" element={<LoadPage />} />
+        <Route path="/inspections" element={<PreviousInspectionsPage />} />
         <Route
           path="/windFarm"
           element={
