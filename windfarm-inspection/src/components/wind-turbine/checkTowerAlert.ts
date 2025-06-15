@@ -33,7 +33,7 @@ export const getTowerAlerts = (tower: any): string[] => {
   const hasDrivetrainVib = drivetrain.some(v => v > 0.1);
 
   if (hasBearingVib || hasDrivetrainVib) {
-    alerts.push("bearing_vibration"); // usamos só um alerta de vibração
+    alerts.push("bearing_vibration"); 
   }
 
   if (stress > 250) alerts.push("stress");
@@ -47,4 +47,27 @@ export const getTowerAlerts = (tower: any): string[] => {
   ) alerts.push("log");
 
   return alerts;
+};
+
+export const getAlertMessages = (turbineData: Record<string, any>): string[] => {
+  const alerts = getTowerAlerts(turbineData);
+  
+  if (alerts.length === 0) {
+    return ['Turbina operando normalmente.'];
+  }
+
+  return alerts.map(alert => {
+    switch (alert) {
+      case 'temperature':
+        return 'Turbina com temperatura acima do normal.';
+      case 'bearing_vibration':
+        return 'Vibração elevada detectada no rolamento.';
+      case 'stress':
+        return 'Estresse estrutural elevado.';
+      case 'log':
+        return 'Falha registrada nos logs.';
+      default:
+        return 'Alerta desconhecido.';
+    }
+  });
 };

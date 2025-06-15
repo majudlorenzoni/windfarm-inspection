@@ -4,7 +4,7 @@ import { ArrowRightCircle } from 'lucide-react';
 import { HomePageContainer } from './styles';
 import { LoadPage } from '../loadPage';
 import { useNavigate } from 'react-router-dom'
-
+import { LoginButton } from '../../login/loginButton';
 export const HomePage = () => {
   const navigate = useNavigate()
 
@@ -20,6 +20,7 @@ export const HomePage = () => {
 
       <div className="homepage-right">
         <h1 className="title" >Wind Vision</h1>
+        <LoginButton />
         <button className="btn" onClick={() => navigate('/load')}>Nova inspeção</button>
         <button className="btn">Inspeções anteriores</button>
       <ArrowRightCircle className="arrow-icon" size={40} color="#1c95c5" />
