@@ -70,6 +70,31 @@ export const PreviousInspectionsPage: React.FC = () => {
     }
   };
 
+    const handleViewReport = async (inspectionId: string) => {
+    const user = auth.currentUser;
+    if (!user || !user.email) {
+      alert('Usuário não autenticado. Faça login.');
+      return;
+    }
+
+    try {
+      const inspectionDocRef = doc(db, 'users', user.email, 'inspections', inspectionId);
+      const inspectionSnap = await getDoc(inspectionDocRef);
+
+      if (!inspectionSnap.exists()) {
+        alert('Inspeção não encontrada.');
+        return;
+      }
+
+      const inspectionData = inspectionSnap.data();
+      setWindData(inspectionData); // <-- Carrega no contexto
+      navigate('/report');       // <-- Redireciona
+    } catch (error) {
+      console.error('Erro ao carregar inspeção:', error);
+      alert(`Erro ao carregar inspeção: ${error instanceof Error ? error.message : error}`);
+    }
+  };
+
   if (loading) return <p>Carregando inspeções...</p>;
 
   return (
@@ -87,7 +112,10 @@ export const PreviousInspectionsPage: React.FC = () => {
               {inspection.createdAt?.toDate().toLocaleString() || 'Desconhecida'}
               <br />
               <button onClick={() => handleViewInspection(inspection.id)}>
-                Visualizar
+                Visualizar inspeção
+              </button>
+              <button onClick={() => handleViewReport(inspection.id)}>
+                Visualizar Relatório
               </button>
             </li>
           ))}

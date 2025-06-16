@@ -7,6 +7,7 @@ import { AuthProvider } from './components/contexts/authContext';
 import { PrivateRoute } from './routes/privateRoute';
 import { LoginPage } from './components/ui/loginPage/loginPage';
 import { PreviousInspectionsPage } from './components/ui/inspetionPage';
+import { RelatorioGeral } from './components/ui/relatorio/relatorioGeral';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/home" element={<HomePage />} />
         <Route path="/load" element={<LoadPage />} />
         <Route path="/inspections" element={<PreviousInspectionsPage />} />
+        <Route path="/report" element={<RelatorioGeral />} />        
         <Route
           path="/windFarm"
           element={
