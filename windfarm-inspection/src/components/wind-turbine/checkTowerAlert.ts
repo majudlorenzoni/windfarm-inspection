@@ -25,6 +25,24 @@ export const hasVibrationAlert = (tower: any): boolean => {
   return vib > 0.1;
 };
 
+export const isSensorFailing = (tower: any) => {
+  const vib = tower.bearing_vibration?.amplitude;
+  const drivetrain = tower.structural_vibration_signals?.drivetrain ?? [];
+  const stress = tower.tower_stress_measurements?.stress;
+  const latest = tower.scada_data?.[tower.scada_data.length - 1];
+  const genTemp = latest?.generator_temperature;
+
+  // Exemplo simples de sensores "travados" ou com valores inválidos:
+  const vibInvalid = vib === null || vib === undefined || vib < 0;
+  const drivetrainInvalid = drivetrain.some(v => v === null || v === undefined || v < 0);
+  const stressInvalid = stress === null || stress === undefined || stress < 0;
+  const genTempInvalid = genTemp === null || genTemp === undefined || genTemp < 0;
+
+  // Pode adicionar mais regras conforme seu conhecimento do sensor
+
+  return vibInvalid || drivetrainInvalid || stressInvalid || genTempInvalid;
+};
+
 
 export const checkIfTowerHasAllAlerts = (tower: any): boolean => {
   const latest = tower.scada_data?.[tower.scada_data.length - 1];

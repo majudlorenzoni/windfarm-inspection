@@ -11,6 +11,7 @@ import TurbineInfoModal from '../components/wind-turbine/turbineInfoModal'
 import { AlertIcon } from '../components/wind-turbine/alertIcon/alertIcon'
 import { checkIfTowerHasAlert, getTowerAlerts } from '../components/wind-turbine/checkTowerAlert'
 import SmokeEffect from './SmokeEffect';
+import SensorFailingLight from './SensorFailingLight';
 
 const PLANE_SIZE = 250;
 const MIN_CAMERA_HEIGHT = 1.5;
@@ -74,16 +75,23 @@ function WindTurbines({
           [baseX + spacing, baseY - spacing, baseZ], // inferior direito
         ];
 
+        console.log('obj.name', obj.name);
+        console.log(
+          'obj.position (world)',
+          obj.getWorldPosition(new THREE.Vector3()),
+        );
+        console.log('obj.position (local)', obj.position);
+
         return (
           <group key={obj.uuid}>
-            <InteractiveTurbine
-              object={obj}
-              onHover={onHover}
-              onClick={onClick}
-              isHovered={hovered === obj}
-              isSelected={selected === obj}
-              isCameraZoomActive={isCameraZoomActive}
-            />
+              <InteractiveTurbine
+                object={obj}
+                onHover={onHover}
+                onClick={onClick}
+                isHovered={hovered === obj}
+                isSelected={selected === obj}
+                isCameraZoomActive={isCameraZoomActive}
+              />
             {alerts.map((alertType, index) => (
               <AlertIcon
                 key={alertType}
@@ -91,6 +99,12 @@ function WindTurbines({
                 position={iconPositions[index]}
               />
             ))}
+            {tower && (
+              <SensorFailingLight
+                tower={tower}
+                position={new THREE.Vector3(0, 20, 0)}
+              />
+            )}
           </group>
         );
       })}

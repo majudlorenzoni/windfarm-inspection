@@ -3,9 +3,12 @@ import { auth } from '../../../../firebase';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { LoginButton } from './loginButton';
 import { useNavigate } from 'react-router-dom';
+import { LoginPageContainer } from './styles';
 
 export const LoginPage: React.FC = () => {
-  const [user, setUser] = useState<{ name: string; email: string } | null>(null);
+  const [user, setUser] = useState<{ name: string; email: string } | null>(
+    null,
+  );
   const [loginSuccess, setLoginSuccess] = useState(false);
   const navigate = useNavigate();
 
@@ -37,18 +40,32 @@ export const LoginPage: React.FC = () => {
   };
 
   return (
-    <div style={{ padding: '2rem' }}>
-      <h1>WindVision</h1>
-      {user ? (
-        <div>
-          <p>Bem-vindo(a), {user.name}!</p>
-          <p>Email: {user.email}</p>
-          {loginSuccess && <p style={{ color: 'green' }}>Login bem-sucedido! Redirecionando...</p>}
-          <button onClick={handleLogout}>Logout</button>
-        </div>
-      ) : (
-        <LoginButton />
-      )}
-    </div>
+    <LoginPageContainer>
+      <div className="homepage-left">
+        <img
+          src="/img/image1.png"
+          alt="Turbina eólica"
+          className="wind-image"
+        />
+      </div>
+      <div className="homepage-right">
+        <h1 className="title">Wind Vision</h1>
+        {user ? (
+          <div className='success'>
+            <p>Bem-vindo(a), {user.name}!</p>
+            {loginSuccess && (
+              <p>
+                Login bem-sucedido! Redirecionando...
+              </p>
+            )}
+            <button className="btn" onClick={handleLogout}>
+              Logout
+            </button>
+          </div>
+        ) : (
+          <LoginButton />
+        )}
+      </div>
+    </LoginPageContainer>
   );
 };
