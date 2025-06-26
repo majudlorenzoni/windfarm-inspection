@@ -15,6 +15,8 @@ import SensorFailingLight from './SensorFailingLight';
 import { NoDataMessage } from './styled';
 import TurbineFilterModal from '../components/ui/filtersModal';
 import { FilterButton } from './FilterButton'
+import { BottomNavButton } from '../components/ui/navegationButtons/styles';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const PLANE_SIZE = 250;
 const MIN_CAMERA_HEIGHT = 1.5;
@@ -241,6 +243,25 @@ export default function SceneCanvas({
 
   const towerData = propsTowerData ?? windData?.towers ?? [];
 
+  const navigate = useNavigate();
+  const location = useLocation();
+  const prevLocationRef = useRef(location);
+
+  useEffect(() => {
+    if (location !== prevLocationRef.current) {
+      prevLocationRef.current = location;
+    }
+  }, [location]);
+
+  const handleLeftClick = () => {
+    const lastPath = prevLocationRef.current?.pathname || '/';
+    navigate(lastPath);
+  };
+
+  const handleRightClick = () => {
+    navigate('/report');
+  };
+
   useEffect(() => {
     if (!turbines) {
       if (towerData && towerData.length > 0) {
@@ -298,94 +319,118 @@ export default function SceneCanvas({
     return filteredIds.includes(turbine.name);
   });
 
-  return (
-    <>
-      {noData ? (
-        <NoDataMessage>
-          <div className="noData">
-            Nenhum dado disponível.
-            <br></br>
-            Por favor, carregue um arquivo JSON com os dados das turbinas.
-          </div>
-        </NoDataMessage>
-      ) : (
-        <>
-          <button
-            style={{
-              position: 'absolute',
-              top: '20px',
-              right: '20px',
-              zIndex: 10,
-              padding: '0.5rem 1rem',
-              background: '#1e1a80',
-              color: '#fff',
-              border: 'none',
-              borderRadius: '8px',
-              cursor: 'pointer',
-            }}
-            onClick={() => setShowFilterModal(true)}
-          >
-            Filtrar turbinas
-          </button>
+return (
+  <>
+    {noData ? (
+      <NoDataMessage>
+        <div className="noData">
+          Nenhum dado disponível.
+          <br />
+          Por favor, carregue um arquivo JSON com os dados das turbinas.
+        </div>
+      </NoDataMessage>
+    ) : (
+      <div style={{ position: 'relative', width: '100vw', height: '100vh' }}>
+        {/* Botões com posição absoluta dentro do contêiner relativo */}
+        <BottomNavButton
+          position="left"
+          onClick={handleLeftClick}
+          aria-label="Voltar"
+          style={{ zIndex: 20 }}
+        >
+          <img src="/img/left-arrow.png" alt="Seta para esquerda" />
+        </BottomNavButton>
 
-          <Canvas
-            shadows
-            camera={{ position: [0, 10, 20], fov: 75, near: 0.1, far: 1000 }}
-            style={{ width: '100vw', height: '100vh' }}
-          >
-            <Sky
-              distance={450000}
-              sunPosition={[100, 50, 100]}
-              inclination={0.49}
-              azimuth={0.25}
-            />
-            <SmokeEffect turbines={visibleTurbines} towerData={towerData} />
-            <ambientLight intensity={0.4} />
-            <hemisphereLight
-              skyColor={0xddddff}
-              groundColor={0x88bb88}
-              intensity={0.2}
-            />
-            <directionalLight position={[10, 20, 10]} intensity={0.3} />
-            <GroundPlane />
-            <Grass
-              instanceCount={200000}
-              width={PLANE_SIZE}
-              height={0.6}
-              windSpeed={1.3}
-              color="#7fc56b"
-              position={[0, 0.02, 0]}
-            />
-            <WindTurbines
-              turbines={visibleTurbines}
-              onHover={handleHover}
-              onClick={handleClick}
-              hovered={hovered}
-              selected={selected}
-              isCameraZoomActive={isCameraZoomActive}
-            />
-            <OrbitControls enablePan={false} />
-            <CameraController />
-            <CameraZoomController selected={selected} />
-          </Canvas>
+        <BottomNavButton
+          position="right"
+          onClick={handleRightClick}
+          aria-label="Avançar"
+          style={{ zIndex: 20 }}
+        >
+          <img src="/img/right-arrow.png" alt="Seta para direita" />
+        </BottomNavButton>
 
-          {showFilterModal && (
-            <TurbineFilterModal
-              allTowers={towerData}
-              filteredIds={filteredIds}
-              onChange={setFilteredIds}
-              onClose={() => setShowFilterModal(false)}
-            />
-          )}
-          {selected && (
-            <TurbineInfoModal
-              turbine={selected}
-              isOpen={true}
-              onClose={() => setSelected(null)}
-            />
-          )}
-        </>
-      )}
-    </>
-  );
+        {/* Botão de filtro */}
+        <button
+          style={{
+            position: 'absolute',
+            top: '20px',
+            right: '20px',
+            zIndex: 20,
+            padding: '0.5rem 1rem',
+            background: '#1e1a80',
+            color: '#fff',
+            border: 'none',
+            borderRadius: '8px',
+            cursor: 'pointer',
+          }}
+          onClick={() => setShowFilterModal(true)}
+        >
+          Filtrar turbinas
+        </button>
+
+        {/* Canvas */}
+        <Canvas
+          shadows
+          camera={{ position: [0, 10, 20], fov: 75, near: 0.1, far: 1000 }}
+          style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
+        >
+          {/* conteúdo do canvas */}
+          <Sky
+            distance={450000}
+            sunPosition={[100, 50, 100]}
+            inclination={0.49}
+            azimuth={0.25}
+          />
+          <SmokeEffect turbines={visibleTurbines} towerData={towerData} />
+          <ambientLight intensity={0.4} />
+          <hemisphereLight
+            skyColor={0xddddff}
+            groundColor={0x88bb88}
+            intensity={0.2}
+          />
+          <directionalLight position={[10, 20, 10]} intensity={0.3} />
+          <GroundPlane />
+          <Grass
+            instanceCount={200000}
+            width={PLANE_SIZE}
+            height={0.6}
+            windSpeed={1.3}
+            color="#7fc56b"
+            position={[0, 0.02, 0]}
+          />
+          <WindTurbines
+            turbines={visibleTurbines}
+            onHover={handleHover}
+            onClick={handleClick}
+            hovered={hovered}
+            selected={selected}
+            isCameraZoomActive={isCameraZoomActive}
+          />
+          <OrbitControls enablePan={false} />
+          <CameraController />
+          <CameraZoomController selected={selected} />
+        </Canvas>
+
+        {/* Modais */}
+        {showFilterModal && (
+          <TurbineFilterModal
+            allTowers={towerData}
+            filteredIds={filteredIds}
+            onChange={setFilteredIds}
+            onClose={() => setShowFilterModal(false)}
+          />
+        )}
+        {selected && (
+          <TurbineInfoModal
+            turbine={selected}
+            isOpen={true}
+            onClose={() => setSelected(null)}
+          />
+        )}
+      </div>
+    )}
+  </>
+);
+
 }

@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 export const FilterModalContainer = styled.div`
   position: absolute;
+  font-family: 'Jockey One', sans-serif;
   top: 0;
   left: 0;
   width: 100vw;

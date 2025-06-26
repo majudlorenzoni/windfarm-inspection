@@ -6,6 +6,7 @@ export const HomePageContainer = styled.div`
   width: 100vw;
 
   display: flex;
+  position: relative; /* para posicionar elementos absolutos dentro */
 
   .homepage-left {
     background-color: #46A3D7;
@@ -66,4 +67,28 @@ export const HomePageContainer = styled.div`
     cursor: pointer;
   }
 
+  /* Botão logout fixo no canto inferior direito */
+  .logout-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #1e1a80;
+    color: #f0f0ff;
+    border: none;
+    border-radius: 50%;
+    width: 56px;
+    height: 56px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease;
+    z-index: 1000; /* para garantir que fique sobre outros elementos */
+  }
+
+  .logout-button:hover {
+    background-color: #2d27aa;
+  }
 `;
