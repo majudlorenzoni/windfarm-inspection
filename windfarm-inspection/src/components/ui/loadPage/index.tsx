@@ -149,26 +149,25 @@ const handleConfirm = async () => {
   }
 
   return (
-    <LoadPageContainer>
-      <input
-        type="file"
-        id="json-upload"
-        accept=".json"
-        onChange={handleFileUpload}
-        style={{ display: 'none' }}
-      />
-      <label htmlFor="json-upload" className="upload-label">
-        <img src="/img/upload.png" alt="Clique para carregar arquivo JSON" />
-      </label>
+  <LoadPageContainer>
 
-      <button
-        className="option-button"
-        onClick={() => navigate('/createInspection')}
-      >
-        ➕ Criar nova inspeção
-      </button>
-      
-      <h1 className="title">Carregar nova inspeção</h1>
-    </LoadPageContainer>
-  );
+    <label onClick={() => navigate('/createInspection')} className="action-button">
+      <img src="/img/plus.png" alt="Criar nova inspeção" />
+      <span>Criar inspeção</span>
+    </label>
+
+    <input
+      type="file"
+      id="json-upload"
+      accept=".json"
+      onChange={handleFileUpload}
+      style={{ display: 'none' }}
+    />
+    <label htmlFor="json-upload" className="action-button">
+      <img src="/img/upload.png" alt="Carregar arquivo JSON" />
+      <span>Carregar arquivo</span>
+    </label>
+  </LoadPageContainer>
+);
+
 };

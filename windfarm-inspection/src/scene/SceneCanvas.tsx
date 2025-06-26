@@ -13,6 +13,8 @@ import { checkIfTowerHasAlert, getTowerAlerts } from '../components/wind-turbine
 import SmokeEffect from './SmokeEffect';
 import SensorFailingLight from './SensorFailingLight';
 import { NoDataMessage } from './styled';
+import TurbineFilterModal from '../components/ui/filtersModal';
+import { FilterButton } from './FilterButton'
 
 const PLANE_SIZE = 250;
 const MIN_CAMERA_HEIGHT = 1.5;
@@ -75,13 +77,6 @@ function WindTurbines({
           [baseX, baseY - spacing, baseZ], // inferior esquerdo
           [baseX + spacing, baseY - spacing, baseZ], // inferior direito
         ];
-
-        console.log('obj.name', obj.name);
-        console.log(
-          'obj.position (world)',
-          obj.getWorldPosition(new THREE.Vector3()),
-        );
-        console.log('obj.position (local)', obj.position);
 
         return (
           <group key={obj.uuid}>
@@ -241,6 +236,9 @@ export default function SceneCanvas({
   const [hovered, setHovered] = useState<THREE.Object3D | null>(null);
   const [selected, setSelected] = useState<THREE.Object3D | null>(null);
 
+  const [showFilterModal, setShowFilterModal] = useState(false);
+  const [filteredIds, setFilteredIds] = useState<string[] | null>(null);
+
   const towerData = propsTowerData ?? windData?.towers ?? [];
 
   useEffect(() => {
@@ -295,19 +293,41 @@ export default function SceneCanvas({
 
   const isCameraZoomActive = selected !== null;
 
+  const visibleTurbines = turbinesToRender.filter((turbine) => {
+    if (!filteredIds) return true;
+    return filteredIds.includes(turbine.name);
+  });
+
   return (
     <>
       {noData ? (
         <NoDataMessage>
           <div className="noData">
-            Nenhum dado disponível. 
+            Nenhum dado disponível.
             <br></br>
-            Por favor, carregue um arquivo JSON com os
-            dados das turbinas.
+            Por favor, carregue um arquivo JSON com os dados das turbinas.
           </div>
         </NoDataMessage>
       ) : (
         <>
+          <button
+            style={{
+              position: 'absolute',
+              top: '20px',
+              right: '20px',
+              zIndex: 10,
+              padding: '0.5rem 1rem',
+              background: '#1e1a80',
+              color: '#fff',
+              border: 'none',
+              borderRadius: '8px',
+              cursor: 'pointer',
+            }}
+            onClick={() => setShowFilterModal(true)}
+          >
+            Filtrar turbinas
+          </button>
+
           <Canvas
             shadows
             camera={{ position: [0, 10, 20], fov: 75, near: 0.1, far: 1000 }}
@@ -319,7 +339,7 @@ export default function SceneCanvas({
               inclination={0.49}
               azimuth={0.25}
             />
-            <SmokeEffect turbines={turbinesToRender} towerData={towerData} />
+            <SmokeEffect turbines={visibleTurbines} towerData={towerData} />
             <ambientLight intensity={0.4} />
             <hemisphereLight
               skyColor={0xddddff}
@@ -337,7 +357,7 @@ export default function SceneCanvas({
               position={[0, 0.02, 0]}
             />
             <WindTurbines
-              turbines={turbinesToRender}
+              turbines={visibleTurbines}
               onHover={handleHover}
               onClick={handleClick}
               hovered={hovered}
@@ -349,7 +369,14 @@ export default function SceneCanvas({
             <CameraZoomController selected={selected} />
           </Canvas>
 
-          {/* Modal aparece à direita quando uma turbina é selecionada */}
+          {showFilterModal && (
+            <TurbineFilterModal
+              allTowers={towerData}
+              filteredIds={filteredIds}
+              onChange={setFilteredIds}
+              onClose={() => setShowFilterModal(false)}
+            />
+          )}
           {selected && (
             <TurbineInfoModal
               turbine={selected}
