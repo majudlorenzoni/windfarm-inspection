@@ -8,7 +8,8 @@ import { PrivateRoute } from './routes/privateRoute';
 import { LoginPage } from './components/ui/loginPage/loginPage';
 import { PreviousInspectionsPage } from './components/ui/inspetionPage';
 import { RelatorioGeral } from './components/ui/relatorio/relatorioGeral';
-
+import { LearnMore } from './components/ui/learnMore';
+import { CreateInspectionForm } from './components/ui/createInspection';
 function App() {
   return (
     <AuthProvider>
@@ -17,8 +18,10 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/home" element={<HomePage />} />
         <Route path="/load" element={<LoadPage />} />
+        <Route path="/learnMore" element={<LearnMore />} />
+        <Route path="/createInspection" element={<CreateInspectionForm />} />
         <Route path="/inspections" element={<PreviousInspectionsPage />} />
-        <Route path="/report" element={<RelatorioGeral />} />        
+        <Route path="/report" element={<RelatorioGeral />} />
         <Route
           path="/windFarm"
           element={

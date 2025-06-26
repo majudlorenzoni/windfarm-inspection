@@ -12,6 +12,7 @@ import { AlertIcon } from '../components/wind-turbine/alertIcon/alertIcon'
 import { checkIfTowerHasAlert, getTowerAlerts } from '../components/wind-turbine/checkTowerAlert'
 import SmokeEffect from './SmokeEffect';
 import SensorFailingLight from './SensorFailingLight';
+import { NoDataMessage } from './styled';
 
 const PLANE_SIZE = 250;
 const MIN_CAMERA_HEIGHT = 1.5;
@@ -84,14 +85,14 @@ function WindTurbines({
 
         return (
           <group key={obj.uuid}>
-              <InteractiveTurbine
-                object={obj}
-                onHover={onHover}
-                onClick={onClick}
-                isHovered={hovered === obj}
-                isSelected={selected === obj}
-                isCameraZoomActive={isCameraZoomActive}
-              />
+            <InteractiveTurbine
+              object={obj}
+              onHover={onHover}
+              onClick={onClick}
+              isHovered={hovered === obj}
+              isSelected={selected === obj}
+              isCameraZoomActive={isCameraZoomActive}
+            />
             {alerts.map((alertType, index) => (
               <AlertIcon
                 key={alertType}
@@ -297,17 +298,14 @@ export default function SceneCanvas({
   return (
     <>
       {noData ? (
-        <div
-          style={{
-            color: 'black',
-            textAlign: 'center',
-            fontSize: '1.5rem',
-            paddingTop: '2rem',
-          }}
-        >
-          Nenhum dado disponível. Por favor, carregue um arquivo JSON com os
-          dados das turbinas.
-        </div>
+        <NoDataMessage>
+          <div className="noData">
+            Nenhum dado disponível. 
+            <br></br>
+            Por favor, carregue um arquivo JSON com os
+            dados das turbinas.
+          </div>
+        </NoDataMessage>
       ) : (
         <>
           <Canvas

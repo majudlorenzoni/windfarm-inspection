@@ -23,7 +23,6 @@
         }
       ],
       "metadata": {
-        "num_variables": 7,
         "first_timestamp": "2025-05-01T00:00:00Z",
         "last_timestamp": "2025-05-31T23:50:00Z",
         "num_datapoints": 4464,

@@ -20,10 +20,9 @@ export const LoginPage: React.FC = () => {
           email: firebaseUser.email,
         });
         setLoginSuccess(true);
-        // Redireciona para /home após 2 segundos
         setTimeout(() => {
           navigate('/home');
-        }, 2000);
+        }, 1500);
       } else {
         setUser(null);
         setLoginSuccess(false);
@@ -51,19 +50,19 @@ export const LoginPage: React.FC = () => {
       <div className="homepage-right">
         <h1 className="title">Wind Vision</h1>
         {user ? (
-          <div className='success'>
+          <div className="success">
             <p>Bem-vindo(a), {user.name}!</p>
-            {loginSuccess && (
-              <p>
-                Login bem-sucedido! Redirecionando...
-              </p>
-            )}
             <button className="btn" onClick={handleLogout}>
               Logout
             </button>
           </div>
         ) : (
-          <LoginButton />
+          <>
+            <LoginButton />
+            <button className="btn" onClick={() => navigate('/learnMore')}>
+              Saiba mais
+            </button>
+          </>
         )}
       </div>
     </LoginPageContainer>

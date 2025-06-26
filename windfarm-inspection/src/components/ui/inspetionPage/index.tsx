@@ -117,8 +117,14 @@ export const PreviousInspectionsPage: React.FC = () => {
     }
   };
 
-  if (loading) return <p>Carregando inspeções...</p>;
+  if (loading)
+    return (
+      <InspectionPageContainer>
+        <p>Carregando inspeções...</p>;
+      </InspectionPageContainer>
+    );
 
+    
   return (
     <InspectionPageContainer>
       <div className="init">

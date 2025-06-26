@@ -12,6 +12,18 @@ export const InspectionPageContainer = styled.div`
   padding: 2rem;
   box-sizing: border-box;
 
+  .init p {
+  font-size: 30px;
+  text-align: center; /* centraliza o texto */
+  border: 2px solid #ccc; /* borda simples */
+  border-radius: 12px; /* cantos arredondados */
+  padding: 20px; /* espaço interno */
+  width: fit-content; /* largura se ajusta ao conteúdo */
+  margin: 0 auto; /* centraliza horizontalmente o bloco */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* sombra leve */
+}
+
+  
   .has {
     width: 100%;
     max-width: 1000px; /* Aumentado para expandir horizontalmente */

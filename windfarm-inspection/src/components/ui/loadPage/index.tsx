@@ -161,6 +161,13 @@ const handleConfirm = async () => {
         <img src="/img/upload.png" alt="Clique para carregar arquivo JSON" />
       </label>
 
+      <button
+        className="option-button"
+        onClick={() => navigate('/createInspection')}
+      >
+        ➕ Criar nova inspeção
+      </button>
+      
       <h1 className="title">Carregar nova inspeção</h1>
     </LoadPageContainer>
   );
