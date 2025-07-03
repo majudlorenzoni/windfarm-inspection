@@ -19,7 +19,6 @@ export async function saveInspection(inspection: InspectionData) {
 
   const inspectionsRef = collection(db, 'users', user.email, 'inspections');
 
-  // Conta quantas inspeções já existem
   const snapshot = await getDocs(inspectionsRef);
   const inspectionCount = snapshot.size;
   const inspectionName = `Inspeção ${inspectionCount + 1}`;
@@ -32,4 +31,6 @@ export async function saveInspection(inspection: InspectionData) {
   });
 
   console.log(`Inspeção salva como: ${inspectionName} (ID: ${newDocRef.id})`);
+
+  return newDocRef.id;  // retorna o ID do documento criado
 }

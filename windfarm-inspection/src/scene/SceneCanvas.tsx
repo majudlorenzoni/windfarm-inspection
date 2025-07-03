@@ -253,10 +253,13 @@ export default function SceneCanvas({
     }
   }, [location]);
 
-  const handleLeftClick = () => {
-    const lastPath = prevLocationRef.current?.pathname || '/';
-    navigate(lastPath);
-  };
+const handleLeftClick = () => {
+  if (window.history.length > 2) {
+    navigate(-1);
+  } else {
+    navigate('/load'); // ou qualquer rota segura para voltar
+  }
+};
 
   const handleRightClick = () => {
     navigate('/report');
