@@ -65,6 +65,7 @@ export const DataWind: React.FC<DataWindProps> = ({ data, onDataChange }) => {
     );
   };
 
+  console.log("aqui meu")
   return (
     <DataWindContainer className="data-wind-container">
       {/* Seção SCADA Data */}
@@ -172,7 +173,7 @@ export const DataWind: React.FC<DataWindProps> = ({ data, onDataChange }) => {
               type="number"
               step="0.001"
               className="data-input"
-              value={data.bearing_vibration.amplitude}
+              value={data.bearing_vibration?.amplitude}
               onChange={(e) => handleChange('bearing_vibration.amplitude', parseFloat(e.target.value))}
               key="vibration-input"
             />
@@ -181,7 +182,7 @@ export const DataWind: React.FC<DataWindProps> = ({ data, onDataChange }) => {
             <input
               type="number"
               className="data-input"
-              value={data.tower_stress_measurements.stress}
+              value={data.tower_stress_measurements?.stress}
               onChange={(e) => handleChange('tower_stress_measurements.stress', parseInt(e.target.value))}
               key="stress-input"
             />

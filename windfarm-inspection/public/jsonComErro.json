@@ -1,0 +1,68 @@
+{
+  "towers": [
+    {
+      "id": "Torre 5",
+      "scada_data": [
+        {
+          "timestamp": "2025-07-01T08:00:00Z",
+          "wind_speed": 10.2,
+          "power_output": 1320,
+          "nacelle_direction": 210,
+          "rotor_speed": 18.2,
+          "ambient_temperature": 27.4,
+          "generator_temperature": 68.5
+        },
+        {
+          "timestamp": "2025-07-01T08:10:00Z",
+          "wind_speed": 10.5,
+          "power_output": 1355
+          "nacelle_direction": 212,
+          "rotor_speed": 18.4,
+          "ambient_temperature": 27.8,
+          "generator_temperature": 69.3
+        }
+      ],
+      "metadata": {
+        "first_timestamp": "2025-06-01T00:00:00Z",
+        "last_timestamp": "2025-07-01T08:10:00Z",
+        "num_datapoints": 4400,
+        "missing_datapoints": 4,
+        "uptime_percent": 98.7,
+        "energy_total_mwh": 298.2,
+        "capacity_factor": 0.51,
+        "flh": 4100,
+        "num_log_entries": 1
+      }
+      "logs": [
+        {
+          "timestamp": "2025-06-10T10:00:00Z",
+          "event": "Manutenção preventiva realizada"
+        }
+      ],
+      "annotations": {
+        "owner": [
+          {
+            "timestamp": "2025-06-10T10:15:00Z",
+            "note": "Lubrificação feita com sucesso, sem anomalias"
+          }
+        ]
+      },
+      "tower_stress_measurements": {
+        "timestamp": "2025-07-01T08:00:00Z",
+        "strain": 0.0011,
+        "stress": 145
+      },
+      "maintenance_log": [
+        {
+          "date": "2025-06-10",
+          "description": "Lubrificação de rotina",
+          "technician": "Tec. Bruno Silva"
+        }
+      ],
+      "sensor_sampling_interval": {
+        "scada": "5min",
+        "vibration": "1s"
+      }
+    }
+  ]
+}

@@ -6,6 +6,7 @@ import { DataWindContainer } from '../dataWind/styles';
 import { useWindData } from '../../windDataContext'
 import { saveInspection } from '../../../utils/saveInspection';
 import { auth } from '../../../../firebase';
+import { jsonrepair } from 'jsonrepair'
 
 type ScadaData = {
   timestamp: string;
@@ -64,28 +65,47 @@ export const LoadPage = () => {
     return true;
   };
 
-const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-  const file = event.target.files?.[0];
-  if (!file) return;
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
 
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    try {
-      const json = JSON.parse(e.target?.result as string);
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const rawText = e.target?.result as string;
 
-      if (!validateJson(json)) return;
+      try {
+        const parsed = JSON.parse(rawText);
+        if (!validateJson(parsed)) return;
 
-      setLocalWindData(json);
-      setWindData(json);
-      setSelectedTowerIndex(0);
-      setConfirmView(false);
-    } catch (error) {
-      console.error('Erro ao processar o arquivo JSON:', error);
-      alert('Arquivo JSON inválido. Por favor, carregue um arquivo no formato correto.');
-    }
+        setLocalWindData(parsed);
+        setWindData(parsed);
+        setSelectedTowerIndex(0);
+        setConfirmView(false);
+      } catch (parseError) {
+        console.warn('Erro de parse inicial. Tentando reparar o JSON...');
+
+        try {
+          const repairedText = jsonrepair(rawText);
+          const repaired = JSON.parse(repairedText);
+
+          if (!validateJson(repaired)) return;
+
+          console.log('repaired', repaired);
+          alert('O JSON tinha pequenos erros e foi reparado automaticamente.');
+
+          setLocalWindData(repaired);
+          setWindData(repaired);
+          setSelectedTowerIndex(0);
+          setConfirmView(false);
+        } catch (repairError) {
+          console.error('Falha ao reparar o JSON:', repairError);
+          alert('O JSON está corrompido e não pôde ser reparado. Verifique a estrutura do arquivo.');
+        }
+      }
+    };
+
+    reader.readAsText(file);
   };
-  reader.readAsText(file);
-};
 
 const handleConfirm = async () => {
   if (!localWindData) return;

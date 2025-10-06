@@ -1,0 +1,100 @@
+{
+  "towers": [
+    {
+      "id": "Torre 1",
+      "scada_data": [
+        {
+          "timestamp": "2025-07-01T08:00:00Z",
+          "wind_speed": 11.8,
+          "power_output": 1450,
+          "nacelle_direction": 218,
+          "rotor_speed": 19.1,
+          "ambient_temperature": 28.6,
+          "generator_temperature": 71.2
+        },
+        {
+          "timestamp": "2025-07-01T08:10:00Z",
+          "wind_speed": 12.0,
+          "power_output": 1490,
+          "nacelle_direction": 217,
+          "rotor_speed": 19.3,
+          "ambient_temperature": 28.9,
+          "generator_temperature": 72.5
+        }
+      ],
+      "metadata": {
+        "first_timestamp": "2025-06-01T00:00:00Z",
+        "last_timestamp": "2025-07-01T08:10:00Z",
+        "num_datapoints": 4465,
+        "missing_datapoints": 2,
+        "uptime_percent": 99.8,
+        "energy_total_mwh": 312.7,
+        "capacity_factor": 0.53,
+        "flh": 4200,
+        "num_log_entries": 0
+      },
+      "logs": [],
+      "annotations": {
+        "owner": [
+          {
+            "timestamp": "2025-06-05T10:00:00Z",
+            "note": "Inspeção de rotina realizada, tudo dentro dos parâmetros"
+          }
+        ]
+      },
+      "standard_power_curve": [
+        { "wind_speed": 5, "expected_power_output": 300 },
+        { "wind_speed": 8, "expected_power_output": 900 },
+        { "wind_speed": 12, "expected_power_output": 1500 }
+      ],
+      "structural_vibration_signals": {
+        "timestamp": "2025-07-01T08:00:00Z",
+        "tower_base": [0.10, 0.11, 0.09],
+        "drivetrain": [0.14, 0.15, 0.13]
+      },
+      "vibration_frequency_spectrum": {
+        "timestamp": "2025-07-01T08:00:00Z",
+        "frequencies": [1, 2, 3, 4, 5],
+        "amplitudes": [0.09, 0.08, 0.10, 0.07, 0.08]
+      },
+      "bearing_vibration": {
+        "timestamp": "2025-07-01T08:00:00Z",
+        "amplitude": 0.11
+      },
+      "tower_stress_measurements": {
+        "timestamp": "2025-07-01T08:00:00Z",
+        "strain": 0.0012,
+        "stress": 160
+      },
+      "maintenance_log": [
+        {
+          "date": "2025-06-05",
+          "description": "Lubrificação preventiva nos rolamentos",
+          "technician": "Tec. Ana Ribeiro"
+        }
+      ],
+      "sensor_sampling_interval": {
+        "scada": "5min",
+        "vibration": "1s"
+      },
+      "accelerometer_data_location": {
+        "tower_base": "base da torre",
+        "drivetrain": "eixo principal"
+      },
+      "status": {
+        "hasAlert": true,
+        "hasAllAlerts": false,
+        "category": "Turbina com Anomalias Parciais"
+      },
+      "alerts": {
+        "temperature": false,
+        "bearing_vibration": true,
+        "stress": false,
+        "log": false
+      },
+      "alertMessages": [
+        "Vibração elevada detectada no rolamento."
+      ]
+    }
+  ]
+}

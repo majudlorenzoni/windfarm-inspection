@@ -32,13 +32,10 @@ export const isSensorFailing = (tower: any) => {
   const latest = tower.scada_data?.[tower.scada_data.length - 1];
   const genTemp = latest?.generator_temperature;
 
-  // Exemplo simples de sensores "travados" ou com valores inválidos:
   const vibInvalid = vib === null || vib === undefined || vib < 0;
   const drivetrainInvalid = drivetrain.some(v => v === null || v === undefined || v < 0);
   const stressInvalid = stress === null || stress === undefined || stress < 0;
   const genTempInvalid = genTemp === null || genTemp === undefined || genTemp < 0;
-
-  // Pode adicionar mais regras conforme seu conhecimento do sensor
 
   return vibInvalid || drivetrainInvalid || stressInvalid || genTempInvalid;
 };
