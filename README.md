@@ -130,6 +130,8 @@ Its goal is to demonstrate how **interactive 3D interfaces** can enhance **remot
 
 ## 🖼️ Screenshots
 
-*(You can add screenshots or GIFs here later to showcase the 3D environment and turbine modal.)*
+![Turbine Modal](https://github.com/majudlorenzoni/windfarm-inspection/blob/main/windfarm-inspection/public/img/Captura%20de%20tela%202025-07-19%20202035.png)
+
+![Turbine Modal](https://github.com/majudlorenzoni/windfarm-inspection/blob/main/windfarm-inspection/public/img/Captura%20de%20tela%202025-07-19%20202241.png)
 
 ---
